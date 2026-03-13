@@ -1432,6 +1432,307 @@ ITEM QTY: 3
 ITEM COST: 30.00
 
 TOTAL BILL: 35.00`
+  },
+  {
+    id: "file-b",
+    category: "File Handling",
+    title: "Count Words, Lines & Characters",
+    description: "Accept filename and count words, lines and characters in the file",
+    code: `#include <stdio.h>
+#include <stdlib.h>
+
+void main() 
+{ 
+\tFILE *fptr; 
+\tchar ch; 
+\tint wrd=1, charctr=1;
+\tchar fname[20];
+\tprintf("\\n Count the number of words and characters in a file :\\n");
+\tprintf("---------------------------------------------------------\\n"); 
+\tprintf(" Input the filename to be opened : ");
+\tscanf("%s", fname);    
+
+\tfptr = fopen(fname, "r"); 
+\tif(fptr == NULL) 
+\t{ 
+\t\tprintf(" File does not exist or can not be opened."); 
+\t} 
+\telse 
+\t{ 
+\t\tch = fgetc(fptr); 
+\t\tprintf(" The content of the file %s are : ", fname); 
+\t\twhile(ch != EOF) 
+\t\t{ 
+\t\t\tprintf("%c", ch); 
+\t\t\tif(ch == ' ' || ch == '\\n')
+\t\t\t{ 
+\t\t\t\twrd++; 
+\t\t\t}
+\t\t\telse
+\t\t\t{
+\t\t\t\tcharctr++; 
+\t\t\t}
+\t\t\tch = fgetc(fptr); 
+\t\t}
+\t\tprintf("\\n The number of words in the file %s are : %d\\n", fname, wrd-2); 
+\t\tprintf(" The number of characters in the file %s are : %d\\n\\n", fname, charctr-1);         
+\t} 
+\tfclose(fptr); 
+}`,
+    output: `Count the number of words and characters in a file :
+---------------------------------------------------------
+Input the filename to be opened : 1.c
+The number of words in the file 1.c are : 137
+The number of characters in the file 1.c are : 570`
+  },
+  {
+    id: "file-c",
+    category: "File Handling",
+    title: "Encrypt File using Key",
+    description: "Accept filename and encrypt the file using a key (Caesar cipher)",
+    code: `#include<stdio.h>
+int main()
+{
+\tchar fname[20], ch;
+\tFILE *fps, *fpt;
+\tprintf("Enter Filename: ");
+\tgets(fname);
+\tfps = fopen(fname, "r");
+\tif(fps == NULL)
+\t\treturn 0;
+\tfpt = fopen("temp.txt", "w");
+\tif(fpt == NULL)
+\t\treturn 0;
+\tch = fgetc(fps);
+\twhile(ch != EOF)
+\t{
+\t\tch = ch + 100;
+\t\tfputc(ch, fpt);
+\t\tch = fgetc(fps);
+\t}
+\tfclose(fps);
+\tfclose(fpt);
+\tfps = fopen(fname, "w");
+\tif(fps == NULL)
+\t\treturn 0;
+\tfpt = fopen("temp.txt", "r");
+\tif(fpt == NULL)
+\t\treturn 0;
+\tch = fgetc(fpt);
+\twhile(ch != EOF)
+\t{
+\t\tfputc(ch, fps);
+\t\tch = fgetc(fpt);
+\t}
+\tfclose(fps);
+\tfclose(fpt);
+\tprintf("\\nFile %s Encrypted Successfully!", fname);
+\treturn 0;
+}`,
+    output: `[rsp@localhost File]$ ./a.out 
+Enter Filename: demo.txt
+File demo.txt Encrypted Successfully!`
+  },
+  {
+    id: "file-d",
+    category: "File Handling",
+    title: "Compare Two Files",
+    description: "Compare two files character by character and check whether they are same",
+    code: `#include<stdio.h>
+#include<stdlib.h> 
+int main()
+{
+\tFILE *fp1, *fp2;
+\tint ch1, ch2;
+\tchar fname1[40], fname2[40];
+
+\tprintf("Enter name of first file : ");
+\tgets(fname1);
+\tprintf("Enter name of second file: ");
+\tgets(fname2);
+
+\tfp1 = fopen(fname1, "r");
+\tfp2 = fopen(fname2, "r");
+
+\tif (fp1 == NULL) 
+\t{
+\t\tprintf("Cannot open %s for reading ", fname1);
+\t\texit(1);
+\t} 
+\telse if (fp2 == NULL) 
+\t{
+\t\tprintf("Cannot open %s for reading ", fname2);
+\t\texit(1);
+\t} 
+\telse 
+\t{
+\t\tch1 = getc(fp1);
+\t\tch2 = getc(fp2);
+
+\t\twhile ((ch1 != EOF) && (ch2 != EOF) && (ch1 == ch2)) 
+\t\t{
+\t\t\tch1 = getc(fp1);
+\t\t\tch2 = getc(fp2);
+\t\t}
+
+\t\tif (ch1 == ch2)
+\t\t\tprintf("Files are identical\\n");
+\t\telse
+\t\t\tprintf("Files are Not identical\\n");
+
+\t\tfclose(fp1);
+\t\tfclose(fp2);
+\t}
+\treturn 0;
+}`,
+    output: `[rsp@localhost File]$ ./a.out
+Enter name of first file : 1.c
+Enter name of second file: 1.c
+Files are identical
+[rsp@localhost File]$ ./a.out
+Enter name of first file : 1.c
+Enter name of second file: 2.c
+Files are Not identical`
+  },
+  {
+    id: "file-e",
+    category: "File Handling",
+    title: "Concatenate & Merge Files",
+    description: "Menu driven: Concatenate two files into third, merge files, exit",
+    code: `#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+\tFILE *fp1, *fp2, *fp3;
+\tchar c;
+\tchar fname1[40], fname2[40], fname3[40];
+\tint ch;
+
+\tprintf("Enter name of first file : ");
+\tgets(fname1);
+\tprintf("Enter name of second file: ");
+\tgets(fname2);
+\tprintf("Enter name of third file : ");
+\tgets(fname3);
+
+\tfor(;;)
+\t{
+\t\tprintf("\\n\\n** FILE OPERATION **\\n\\n");
+\t\tprintf("1. Concatenate two files into third\\n");
+\t\tprintf("2. Merge the files\\n");
+\t\tprintf("3. Exit\\n");
+\t\tprintf("\\nEnter your choice: ");
+\t\tscanf("%d", &ch);
+
+\t\tswitch(ch)
+\t\t{
+\t\t\tcase 1:
+\t\t\t\tfp1 = fopen(fname1, "r");
+\t\t\t\tfp2 = fopen(fname2, "r");
+\t\t\t\tfp3 = fopen(fname3, "a");
+\t\t\t\tif (fp1 == NULL || fp2 == NULL || fp3 == NULL)
+\t\t\t\t{
+\t\t\t\t\tputs("Could not open file");
+\t\t\t\t\texit(0);
+\t\t\t\t}
+\t\t\t\twhile ((c = fgetc(fp1)) != EOF)
+\t\t\t\t\tfputc(c, fp3);
+\t\t\t\twhile ((c = fgetc(fp2)) != EOF)
+\t\t\t\t\tfputc(c, fp3);
+\t\t\t\tprintf("Concatenated file1 and file2 into file3");
+\t\t\t\tfclose(fp1); fclose(fp2); fclose(fp3);
+\t\t\t\tbreak;
+\t\t\tcase 2:
+\t\t\t\tfp1 = fopen(fname1, "r");
+\t\t\t\tfp2 = fopen(fname2, "a");
+\t\t\t\tif (fp1 == NULL || fp2 == NULL)
+\t\t\t\t{
+\t\t\t\t\tputs("Could not open file");
+\t\t\t\t\texit(0);
+\t\t\t\t}
+\t\t\t\twhile ((c = fgetc(fp1)) != EOF)
+\t\t\t\t\tfputc(c, fp2);
+\t\t\t\tprintf("Merged file1 into file2");
+\t\t\t\tfclose(fp1); fclose(fp2);
+\t\t\t\tbreak;
+\t\t\tcase 3:
+\t\t\t\texit(0);
+\t\t}
+\t}
+\treturn 0;
+}`,
+    output: `Enter name of first file : file1.txt
+Enter name of second file: file2.txt
+Enter name of third file : file3.txt
+
+** FILE OPERATION **
+1. Concatenate two files into third
+2. Merge the files
+3. Exit
+Enter your choice: 1
+Concatenated file1 and file2 into file3
+
+Enter your choice: 2
+Merged file1 into file2
+
+Enter your choice: 3`
+  },
+  {
+    id: "pre-a",
+    category: "Preprocessor",
+    title: "Area & Perimeter using Macro",
+    description: "Find area and perimeter of circle using macro PI",
+    code: `#include <stdio.h>
+
+#define PI 3.14f
+
+int main()
+{
+\tfloat rad, area, perm;
+
+\tprintf("Enter radius of circle: ");
+\tscanf("%f", &rad);
+
+\tarea = PI * rad * rad;
+\tperm = 2 * PI * rad;
+
+\tprintf("Area of circle: %f\\n", area);
+\tprintf("Perimeter of circle: %f\\n", perm);
+\treturn 0;
+}`,
+    output: `[localhost]$ ./a.out
+Enter radius of circle: 2.3
+Area of circle: 16.610600
+Perimeter of circle: 14.444000`
+  },
+  {
+    id: "pre-b",
+    category: "Preprocessor",
+    title: "MIN Macro",
+    description: "Define a macro MIN to find minimum of two numbers",
+    code: `#include <stdio.h>
+
+#define MIN(x,y) ((x<y)?x:y)
+
+int main()
+{
+\tint a, b, min;
+
+\tprintf("Enter first number: ");
+\tscanf("%d", &a);
+\tprintf("Enter second number: ");
+\tscanf("%d", &b);
+
+\tmin = MIN(a, b);
+\tprintf("Minimum number is: %d\\n", min);
+
+\treturn 0;
+}`,
+    output: `[localhost]$ ./a.out
+Enter first number: 12
+Enter second number: 13
+Minimum number is: 12`
   }
 ];
 
