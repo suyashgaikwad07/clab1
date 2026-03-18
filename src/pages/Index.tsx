@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Search, Copy, Check, Terminal, Code2, Menu, X } from "lucide-react";
+import { Search, Copy, Check, Terminal, Code2, Menu, X, Download } from "lucide-react";
 import { programs, categories } from "@/data/programs";
 import SyntaxHighlighter from "@/components/SyntaxHighlighter";
 
