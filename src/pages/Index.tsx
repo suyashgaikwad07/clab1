@@ -161,13 +161,22 @@ const Index = () => {
                   <p className="text-xs md:text-sm text-muted-foreground truncate">{selected.description}</p>
                 </div>
               </div>
-              <button
-                onClick={handleCopy}
-                className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-md bg-primary text-primary-foreground text-xs md:text-sm font-medium hover:bg-primary/90 transition-colors shrink-0"
-              >
-                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                <span className="hidden sm:inline">{copied ? "Copied!" : "Copy Code"}</span>
-              </button>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={handleDownload}
+                  className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-md border border-border bg-accent text-foreground text-xs md:text-sm font-medium hover:bg-accent/80 transition-colors"
+                >
+                  <Download className="h-4 w-4" />
+                  <span className="hidden sm:inline">Download</span>
+                </button>
+                <button
+                  onClick={handleCopy}
+                  className="flex items-center gap-1.5 px-3 md:px-4 py-2 rounded-md bg-primary text-primary-foreground text-xs md:text-sm font-medium hover:bg-primary/90 transition-colors"
+                >
+                  {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                  <span className="hidden sm:inline">{copied ? "Copied!" : "Copy Code"}</span>
+                </button>
+              </div>
             </div>
 
             {/* Code Area */}
