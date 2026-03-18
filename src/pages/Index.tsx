@@ -38,6 +38,19 @@ const Index = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleDownload = () => {
+    if (!selected) return;
+    const blob = new Blob([selected.code], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = selected.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") + ".c";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const handleSelectProgram = (id: string) => {
     setSelectedId(id);
     setSidebarOpen(false);
